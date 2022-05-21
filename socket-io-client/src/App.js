@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from "react";
-import socketIOClient from "socket.io-client";
-import { ENDPOINT } from "./config";
+import React, { useState } from "react";
+import { ClientComponent } from "./components/ClientComponent";
 
 import "./App.css";
 
 function App() {
-  const [response, setResponse] = useState("");
-
-  useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-    socket.on("FromAPI", (data) => {
-      console.log(data);
-      setResponse(data);
-    });
-  }, []);
+  const [loadClient, setLoadClient] = useState(true);
 
   return (
     <div className="App">
-      <p>
-        It's <time dateTime="response">{response}</time>
-      </p>
+      {/* LOAD OR UNLOAD THE CLIENT */}
+      <button onClick={() => setLoadClient((prevState) => !prevState)}>
+        {loadClient ? "STOP CLIENT" : "START CLIENT"}
+      </button>
+      {/* SOCKET IO CLIENT*/}
+      {loadClient ? <ClientComponent /> : null}
     </div>
   );
 }
